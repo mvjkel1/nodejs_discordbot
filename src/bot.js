@@ -21,10 +21,10 @@ client.on('messageCreate', (message) => {
              .split(/\s+/)
 
     const target = message.mentions.members.first()
-    /* TODO: 
-    1. REFACTORING: usage of a function to get CMD_NAME rather than case/if..elseif
-    2. REFACTORING: (export/import) modules usage to develop bot behavior
-    */
+    
+    // TODO:
+    //  1. REFACTORING: usage of a function to get CMD_NAME rather than case/if..elseif
+    //  2. REFACTORING: (export/import) modules usage to develop bot behavior
     if (target) {
       const targetMember = message.guild.members.cache.get(target.id)
       if (CMD_NAME === 'kick') {
