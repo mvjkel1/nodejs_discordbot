@@ -18,18 +18,30 @@ client.on('ready', () => {
 client.on('messageCreate', (message) => {
   if (message.author.bot) return;
   if (message.content.startsWith(PREFIX)) {
-    const [CMD_NAME, ...args] = 
+    const CMD_NAME = 
       message.content
              .trim()
              .substring(PREFIX.length)
              .split(/\s+/)
-    if (CMD_NAME === 'kick') {
-      if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
-        return message.reply('You do not have permissions to use that command.')
-      if (args.length === 0) 
-        return message.reply('Please provide an ID')
-      const member = message.guild.members.cache.get(args[0]);
-      kickUser(member)
+
+    const target = message.mentions.members.first()
+    /* TODO: 
+    1. REFACTORING: usage of a function to get CMD_NAME rather than case/if..elseif
+    2. REFACTORING: (export/import) modules usage to develop bot behavior
+    */
+    if (target) {
+      const targetMember = message.guild.members.cache.get(target.id)
+      if (CMD_NAME === 'kick') {
+        if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
+          return message.reply('You do not have permissions to use that command.')
+        targetMember.kick()
+        message.channel.send(`Done.`)
+      } 
+      // else if (CMD_NAME === 'role') {
+      //   
+      // }
+    } else {
+      message.channel.send(`Failed.`)
     }
   }
 })
