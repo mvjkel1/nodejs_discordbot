@@ -1,13 +1,11 @@
-
+// [start] config {{{
 require('dotenv').config()
-
 const { Client, Intents, Permissions } = require('discord.js');
-
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]
 });
-
 const PREFIX = "!"
+// [end] config }}}
 
 client.on('ready', () => {
   console.log(`${client.user.username} has logged in! :)`);
