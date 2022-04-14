@@ -9,4 +9,5 @@ function kickUser(member) {
   }
 }
 
-exports.kickUser = kickUser
+module.exports = { kickUser };
+// exports.kickUser = kickUser
