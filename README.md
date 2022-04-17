@@ -1,2 +1,2 @@
 # nodejs_discordbot
-Simple discord bot for personal usage.
+Discord bot for personal usage and learning purposes.
