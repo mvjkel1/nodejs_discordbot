@@ -115,11 +115,6 @@ client.on('messageCreate', (message) => {
       .trim()
       .substring(PREFIX.length)
       .split(/\s+/)
-
-    // TODO:
-    // [DONE] 1. REFACTORING: usage of a function to get CMD_NAME rather than case/if..elseif
-    //  2. REFACTORING: (export/import) modules usage to develop bot behavior
-
     const target = message.mentions.members.first() // Provides an user (to handle with) object
     // console.log(args)
     // console.log(CMD_NAME)
