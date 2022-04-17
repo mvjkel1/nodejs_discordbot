@@ -4,60 +4,104 @@ require('dotenv').config()
 const {
   Client,
   Intents,
-  Permissions
+  Permissions,
+  Invite
 } = require('discord.js');
+
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]
 });
+
 const PREFIX = "!"
 // [end] config }}}
 
-// [start] resolveCmdName {{{
+// [start] resolveCmdName - user hanlder {{{
 function resolveCmdName(message, cmdName, targetUser, args) {
-  const role = message.guild.roles.cache.find(role => role.name === `${args[1]}`);
+  const role = message.guild.roles.cache.find(role => role.name === `${args[1]}`)
   // TODO: Implement (un/succesfull) result rule-check
   switch (cmdName) {
     case ("kick"):
+      // Example usage:
+      // !kick @user
       if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
         return message.reply('You do not have permissions to use that command.')
-      targetUser.kick().catch(console.error)
+      targetUser.kick()
+        .then((targetUser) => {
+          message.reply(`${targetUser} has been kicked out successfully.`)
+        })
+        .catch(() => {
+          message.reply("Something went wrong.")
+        })
       message.reply(`${targetUser} was kicked out succesfully.`)
       break;
     case ("ban"):
       // TODO: Test it out
+      //       then add 'Example usage'
       if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS))
         return message.reply('You do not have permissions to use that command.')
-      targetUser.ban().catch(console.error)
-      message.reply(`${targetUser} was banned succesfully.`)
+      targetUser.ban()
+        .then(targetUser => {
+          message.reply(`${targetUser} has been banned succesfully.`)
+        })
+        .catch(() => {
+          message.reply("Something went wrong.")
+        })
       break;
     case ("addRole"):
       // Example usage:
-      // !addRole @user Role Name
+      // !addRole @user roleName
       if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES))
         return message.reply('You do not have permissions to use that command.')
       if (!targetUser.roles.cache.has(role.id)) {
-        targetUser.roles.add(role).catch(console.error);
-        message.reply(`Added role ('${role}') to a ${targetUser}`)
+        targetUser.roles.add(role)
+          .then((targetUser) => {
+            message.reply(`Successfully added '${role}' role to the ${targetUser}.`)
+          })
+          .catch(() => {
+            message.reply("Something went wrong.")
+          });
+        message.reply(`Added '${role}' role to a ${targetUser}.`)
       } else {
-        message.reply(`${targetUser} already has '${role}' role`)
+        message.reply(`${targetUser} already has '${role}' role.`)
       }
       break;
     case ("removeRole"):
+      // Example usage:
+      // !removeRole @user roleName
       if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES))
         return message.reply('You do not have permissions to use that command.')
       if (targetUser.roles.cache.has(role.id)) {
-        targetUser.roles.remove(role).catch(console.error)
-        message.reply(`Removed role ('${role}') from a ${targetUser}`)
+        targetUser.roles.remove(role)
+          .then((targetUser) => {
+            message.reply(`Successfully removed '${role}' role from the ${targetUser}`)
+          })
+          .catch(() => {
+            message.reply("Something went wrong.")
+          })
+        message.reply(`Removed '${role}' role from a ${targetUser}`)
       } else {
         message.reply(`${targetUser} does not have '${role}' role`)
       }
+      break;
+    case ("createInvitationLink"):
+      // TODO
+      // message.channel.createInvite({
+      //   unique: true
+      // }).then(() => {
+      //   message.reply(`I've created you an invite: https://discord.gg/" + ${Invite.code}`)
+      // })
       break;
     default:
       message.channel.send(`${cmdName} not implemented yet.`)
       break;
   }
 }
-// [end] resolveCmdName }}}
+// [end] resolveCmdName - user handler }}}
+
+// [start] resolveCmdName - voice/text channel handler (add/remove/edit)
+// function resolveCmdName()
+// [end] resolveCmdName - voice/text channel handler
+
 
 client.on('ready', () => {
   console.log(`${client.user.username} has logged in! :)`);
