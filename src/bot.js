@@ -15,7 +15,8 @@ const client = new Client({
 const PREFIX = "!"
 // [end] config }}}
 
-// [start] resolveCmdName - user hanlder {{{
+// TODO: async/await usage
+// [start] resolveCmdName - user handler {{{
 function resolveCmdName(message, cmdName, targetUser, args) {
   const role = message.guild.roles.cache.find(role => role.name === `${args[1]}`)
   // TODO: Implement (un/succesfull) result rule-check
